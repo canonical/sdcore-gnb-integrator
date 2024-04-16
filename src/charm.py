@@ -1,16 +1,10 @@
 #!/usr/bin/env python3
-# Copyright 2024 mark
+# Copyright 2024 Canonical Ltd.
 # See LICENSE file for licensing details.
 #
 # Learn more at: https://juju.is/docs/sdk
 
-"""Charm the service.
-
-Refer to the following tutorial that will help you
-develop a new k8s charm using the Operator Framework:
-
-https://juju.is/docs/sdk/create-a-minimal-kubernetes-charm
-"""
+"""Integrator charm to provide a fiveg_gnb_identity."""
 
 import logging
 from typing import Optional
@@ -75,7 +69,7 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
                 relation_id=gnb_identity_relation.id, gnb_name=self._gnb_name, tac=tac
             )
 
-    def _get_invalid_configs(self) -> list[str]:  # noqa: C901
+    def _get_invalid_configs(self) -> list[str]:
         """Get a list of invalid Juju configurations."""
         invalid_configs = []
         if not self._get_tac_from_config() or not self._get_tac_as_int():
