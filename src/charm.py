@@ -5,13 +5,13 @@
 """Integrator charm to provide a fiveg_gnb_identity."""
 
 import logging
-from typing import Optional, cast
+from typing import Optional
 
 import ops
 from charms.sdcore_gnbsim_k8s.v0.fiveg_gnb_identity import (  # type: ignore[import]
     GnbIdentityProvides,
 )
-from ops import ActiveStatus, BlockedStatus, CollectStatusEvent
+from ops import ActiveStatus, BlockedStatus, CollectStatusEvent, EventBase
 
 logger = logging.getLogger(__name__)
 
@@ -24,11 +24,11 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
     def __init__(self, *args):
         super().__init__(*args)
         self.framework.observe(self.on.collect_unit_status, self._on_collect_unit_status)
-        self.framework.observe(self.on.config_changed, self._on_config_changed)
+        self.framework.observe(self.on.config_changed, self._on_config_changed_or_relation_joined)
         self._gnb_identity_provider = GnbIdentityProvides(self, GNB_IDENTITY_RELATION_NAME)
         self.framework.observe(
             self._gnb_identity_provider.on.fiveg_gnb_identity_request,
-            self._on_config_changed,
+            self._on_config_changed_or_relation_joined,
         )
 
     def _on_collect_unit_status(self, event: CollectStatusEvent):
@@ -45,7 +45,7 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
             return
         event.add_status(ActiveStatus())
 
-    def _on_config_changed(self, event: ops.ConfigChangedEvent):
+    def _on_config_changed_or_relation_joined(self, event: EventBase):
         """Publish the updated GNB name and TAC in the `fiveg_gnb_identity` relation data bag."""
         if not self.unit.is_leader():
             return
@@ -54,7 +54,7 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
             logger.info("No %s relations found.", GNB_IDENTITY_RELATION_NAME)
             return
 
-        tac = self._get_tac_as_int()
+        tac = self._get_tac_from_config_as_int()
         if not tac:
             logger.error(
                 "TAC value cannot be published on the %s relation", GNB_IDENTITY_RELATION_NAME
@@ -68,14 +68,11 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
     def _get_invalid_configs(self) -> list[str]:
         """Get a list of invalid Juju configurations."""
         invalid_configs = []
-        if not self._get_tac_from_config() or not self._get_tac_as_int():
+        if not self._get_tac_from_config_as_int():
             invalid_configs.append("tac")
         return invalid_configs
 
-    def _get_tac_from_config(self) -> Optional[str]:
-        return cast(Optional[str], self.model.config.get("tac"))
-
-    def _get_tac_as_int(self) -> Optional[int]:
+    def _get_tac_from_config_as_int(self) -> Optional[int]:
         """Convert the TAC value in the config to an integer.
 
         Returns:
