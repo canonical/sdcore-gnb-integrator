@@ -1,7 +1,6 @@
-# Copyright 2024 mark
+# Copyright 2024 Canonical Ltd.
 # See LICENSE file for licensing details.
 #
-# Learn more about testing at: https://juju.is/docs/sdk/testing
 
 import unittest
 from unittest.mock import call, patch
@@ -26,10 +25,9 @@ class TestCharm(unittest.TestCase):
         self.harness.evaluate_status()
         self.harness.update_config(key_values={})
         self.assertEqual(self.harness.charm.unit.status, ActiveStatus())
-        self.harness.charm.on.update_status.emit()
 
     @patch(f"{GNB_IDENTITY_LIB_PATH}.GnbIdentityProvides.publish_gnb_identity_information")
-    def test_given_fiveg_gnb_identity_relation_created_then_gnb_name_and_tac_are_published(
+    def test_given_tac_when_fiveg_gnb_identity_relation_created_then_gnb_name_and_tac_are_published(
         self, patched_publish_gnb_identity
     ):
         self.harness.set_leader(is_leader=True)

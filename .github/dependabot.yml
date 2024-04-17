@@ -6,3 +6,17 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "chore: "
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore: "
+
+  - package-ecosystem: "terraform"
+    directory: "/terraform/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore: "
