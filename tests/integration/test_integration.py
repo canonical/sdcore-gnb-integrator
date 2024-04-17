@@ -24,7 +24,6 @@ async def build_and_deploy(ops_test):
     await ops_test.model.deploy(
         charm,
         application_name=APP_NAME,
-        trust=True,
     )
     await ops_test.model.deploy(
         NMS_CHARM_NAME,
