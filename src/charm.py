@@ -77,7 +77,7 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
         return invalid_configs
 
     def _get_tac_from_config(self) -> Optional[str]:
-        return self.model.config.get("tac")
+        return cast(Optional[str], self.model.config.get("tac"))
 
     def _get_tac_as_int(self) -> Optional[int]:
         """Convert the TAC value in the config to an integer.
