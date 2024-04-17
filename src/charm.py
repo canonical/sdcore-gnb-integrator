@@ -34,7 +34,7 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
         )
 
     def _on_collect_unit_status(self, event: CollectStatusEvent):
-        """Checks the unit status and set it when CollectStatusEvent is fired.
+        """Check the unit status and set it when CollectStatusEvent is fired.
 
         Args:
             event: CollectStatusEvent
@@ -48,13 +48,7 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
         event.add_status(ActiveStatus())
 
     def _on_config_changed(self, event: ops.ConfigChangedEvent):
-        """Publish new gNB configuration via the relation databag"""
-
-        self._update_fiveg_gnb_identity_relation_data()
-        self.unit.status = ActiveStatus()
-
-    def _update_fiveg_gnb_identity_relation_data(self) -> None:
-        """Publish GNB name and TAC in the `fiveg_gnb_identity` relation data bag."""
+        """Publish the updated GNB name and TAC in the `fiveg_gnb_identity` relation data bag."""
         if not self.unit.is_leader():
             return
         fiveg_gnb_identity_relations = self.model.relations.get(GNB_IDENTITY_RELATION_NAME)

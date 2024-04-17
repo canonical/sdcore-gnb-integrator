@@ -70,7 +70,8 @@ class TestCharm(unittest.TestCase):
         self.harness.update_config(key_values={"tac": test_tac})
         self.harness.evaluate_status()
         self.assertEqual(
-            self.harness.charm.unit.status, BlockedStatus("Configurations are invalid: ['tac']")
+            self.harness.charm.unit.status,
+            BlockedStatus("The following configurations are not valid: ['tac']"),
         )
 
     @patch(f"{GNB_IDENTITY_LIB_PATH}.GnbIdentityProvides.publish_gnb_identity_information")
