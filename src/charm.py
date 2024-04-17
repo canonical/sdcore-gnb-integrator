@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # Copyright 2024 Canonical Ltd.
 # See LICENSE file for licensing details.
-#
-# Learn more at: https://juju.is/docs/sdk
 
 """Integrator charm to provide a fiveg_gnb_identity."""
 
