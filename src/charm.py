@@ -7,7 +7,7 @@
 """Integrator charm to provide a fiveg_gnb_identity."""
 
 import logging
-from typing import Optional
+from typing import Optional, cast
 
 import ops
 from charms.sdcore_gnbsim_k8s.v0.fiveg_gnb_identity import (  # type: ignore[import]
