@@ -11,5 +11,4 @@ resource "juju_application" "gnb" {
   }
   config = var.config
   units  = 1
-  trust  = true
 }
