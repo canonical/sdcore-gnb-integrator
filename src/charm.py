@@ -13,7 +13,7 @@ import ops
 from charms.sdcore_gnbsim_k8s.v0.fiveg_gnb_identity import (  # type: ignore[import]
     GnbIdentityProvides,
 )
-from ops import ActiveStatus, BlockedStatus
+from ops import ActiveStatus, BlockedStatus, CollectStatusEvent
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +25,7 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
 
     def __init__(self, *args):
         super().__init__(*args)
+        self.framework.observe(self.on.collect_unit_status, self._on_collect_unit_status)
         self.framework.observe(self.on.config_changed, self._on_config_changed)
         self._gnb_identity_provider = GnbIdentityProvides(self, GNB_IDENTITY_RELATION_NAME)
         self.framework.observe(
@@ -32,17 +33,22 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
             self._on_config_changed,
         )
 
-    def _on_config_changed(self, event: ops.ConfigChangedEvent):
-        """Handle changed configuration.
+    def _on_collect_unit_status(self, event: CollectStatusEvent):
+        """Checks the unit status and set it when CollectStatusEvent is fired.
 
-        Verifies the configuration is valid, and if so, notifies
-        all integrations of the current configuration.
-
-        Learn more about config at https://juju.is/docs/sdk/config
+        Args:
+            event: CollectStatusEvent
         """
         if invalid_configs := self._get_invalid_configs():
-            self.unit.status = BlockedStatus(f"Configurations are invalid: {invalid_configs}")
+            event.add_status(
+                BlockedStatus(f"The following configurations are not valid: {invalid_configs}")
+            )
+            logger.info("The following configurations are not valid: %s", invalid_configs)
             return
+        event.add_status(ActiveStatus())
+
+    def _on_config_changed(self, event: ops.ConfigChangedEvent):
+        """Publish new gNB configuration via the relation databag"""
 
         self._update_fiveg_gnb_identity_relation_data()
         self.unit.status = ActiveStatus()
