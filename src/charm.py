@@ -15,7 +15,6 @@ from charms.sdcore_gnbsim_k8s.v0.fiveg_gnb_identity import (  # type: ignore[imp
 )
 from ops.model import ActiveStatus, BlockedStatus
 
-# Log messages can be retrieved using juju debug-log
 
 logger = logging.getLogger(__name__)
 
