@@ -19,12 +19,6 @@ newgrp snap_microk8s
 sudo microk8s enable hostpath-storage
 ```
 
-Enable the Multus MicroK8s addon:
-```shell
-sudo microk8s addons repo add community https://github.com/canonical/microk8s-community-addons --reference feat/strict-fix-multus
-sudo microk8s enable multus
-```
-
 Install Juju and bootstrap a controller on the MicroK8S instance:
 ```shell
 sudo snap install juju --channel=3.1/stable
