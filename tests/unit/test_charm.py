@@ -27,7 +27,7 @@ class TestCharm(unittest.TestCase):
         self.assertEqual(self.harness.charm.unit.status, ActiveStatus())
 
     @patch(f"{GNB_IDENTITY_LIB_PATH}.GnbIdentityProvides.publish_gnb_identity_information")
-    def test_given_tac_when_fiveg_gnb_identity_relation_created_then_gnb_name_and_tac_are_published(
+    def test_given_tac_when_fiveg_gnb_identity_relation_created_then_gnb_name_and_tac_are_published(  # noqa: E501
         self, patched_publish_gnb_identity
     ):
         self.harness.set_leader(is_leader=True)
@@ -45,7 +45,7 @@ class TestCharm(unittest.TestCase):
         )
 
     @patch(f"{GNB_IDENTITY_LIB_PATH}.GnbIdentityProvides.publish_gnb_identity_information")
-    def test_given_no_tac_in_config_when_fiveg_gnb_identity_relation_is_added_then_default_tac_is_published(
+    def test_given_no_tac_in_config_when_fiveg_gnb_identity_relation_is_added_then_default_tac_is_published(  # noqa: E501
         self, patched_publish_gnb_identity
     ):
         self.harness.set_leader(is_leader=True)
@@ -74,7 +74,7 @@ class TestCharm(unittest.TestCase):
         )
 
     @patch(f"{GNB_IDENTITY_LIB_PATH}.GnbIdentityProvides.publish_gnb_identity_information")
-    def test_given_tac_is_not_hexadecimal_when_fiveg_gnb_identity_relation_is_added_then_gnb_identity_is_not_published(
+    def test_given_tac_is_not_hexadecimal_when_fiveg_gnb_identity_relation_is_added_then_gnb_identity_is_not_published(  # noqa: E501
         self, patched_publish_gnb_identity
     ):
         self.harness.set_leader(is_leader=True)
@@ -87,7 +87,7 @@ class TestCharm(unittest.TestCase):
         patched_publish_gnb_identity.assert_not_called()
 
     @patch(f"{GNB_IDENTITY_LIB_PATH}.GnbIdentityProvides.publish_gnb_identity_information")
-    def tests_given_unit_is_not_leader_when_fiveg_gnb_identity_relation_is_added_then_gnb_identity_is_not_published(
+    def tests_given_unit_is_not_leader_when_fiveg_gnb_identity_relation_is_added_then_gnb_identity_is_not_published(  # noqa: E501
         self, patched_publish_gnb_identity
     ):
         self.harness.set_leader(is_leader=False)
@@ -97,7 +97,7 @@ class TestCharm(unittest.TestCase):
         patched_publish_gnb_identity.assert_not_called()
 
     @patch(f"{GNB_IDENTITY_LIB_PATH}.GnbIdentityProvides.publish_gnb_identity_information")
-    def test_given_fiveg_gnb_identity_relation_exists_when_tac_config_changed_then_new_tac_is_published(
+    def test_given_fiveg_gnb_identity_relation_exists_when_tac_config_changed_then_new_tac_is_published(  # noqa: E501
         self, patched_publish_gnb_identity
     ):
         self.harness.set_leader(is_leader=True)

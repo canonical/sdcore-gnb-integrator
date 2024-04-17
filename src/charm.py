@@ -13,8 +13,7 @@ import ops
 from charms.sdcore_gnbsim_k8s.v0.fiveg_gnb_identity import (  # type: ignore[import]
     GnbIdentityProvides,
 )
-from ops.model import ActiveStatus, BlockedStatus
-
+from ops import ActiveStatus, BlockedStatus
 
 logger = logging.getLogger(__name__)
 
