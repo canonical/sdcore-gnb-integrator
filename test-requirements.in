@@ -5,6 +5,7 @@ mypy
 pep8-naming
 pyproject-flake8
 pytest
+pytest-interface-tester
 pytest-operator
 ruff
 types-PyYAML
