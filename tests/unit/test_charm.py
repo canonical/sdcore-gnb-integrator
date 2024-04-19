@@ -21,9 +21,8 @@ class TestCharm(unittest.TestCase):
         self.addCleanup(self.harness.cleanup)
         self.harness.begin()
 
-    def test_given_default_config_when_config_changed_then_status_is_active(self):
+    def test_given_default_config_then_status_is_active(self):
         self.harness.evaluate_status()
-        self.harness.update_config(key_values={})
         self.assertEqual(self.harness.charm.unit.status, ActiveStatus())
 
     @patch(f"{GNB_IDENTITY_LIB_PATH}.GnbIdentityProvides.publish_gnb_identity_information")
