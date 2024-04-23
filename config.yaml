@@ -1,0 +1,5 @@
+options:
+  tac:
+    type: string
+    default: "000001"
+    description: Tracking Area Code. Hexadecimal value represented as a string.
