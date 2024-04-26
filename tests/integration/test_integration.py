@@ -18,9 +18,9 @@ NMS_CHARM_NAME = "sdcore-nms-k8s"
 
 @pytest.fixture(scope="module")
 @pytest.mark.abort_on_fail
-async def build_and_deploy(ops_test):
-    """Build the charm-under-test and deploy it."""
-    charm = await ops_test.build_charm(".")
+async def deploy(ops_test, request):
+    """Deploy the charm-under-test"""
+    charm = Path(request.config.getoption("--charm_path")).resolve()
     await ops_test.model.deploy(
         charm,
         application_name=APP_NAME,
@@ -36,7 +36,7 @@ async def build_and_deploy(ops_test):
 @pytest.mark.abort_on_fail
 async def test_deploy_charm_and_wait_for_active_status(
     ops_test,
-    build_and_deploy,
+    deploy,
 ):
     await ops_test.model.wait_for_idle(
         apps=[APP_NAME],
@@ -48,7 +48,7 @@ async def test_deploy_charm_and_wait_for_active_status(
 @pytest.mark.abort_on_fail
 async def test_relate_and_wait_for_active_status(
     ops_test,
-    build_and_deploy,
+    deploy,
 ):
     await ops_test.model.integrate(
         relation1=f"{APP_NAME}:fiveg_gnb_identity", relation2=NMS_CHARM_NAME

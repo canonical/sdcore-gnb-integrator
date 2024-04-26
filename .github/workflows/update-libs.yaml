@@ -30,6 +30,7 @@ jobs:
           git config --global user.signingkey ~/.ssh/id_rsa.pub
           git config --global commit.gpgsign true
           git config --global gpg.format ssh
+
       - name: Fetch charm libraries
         run: |
           sudo snap install charmcraft --classic --channel latest/stable
