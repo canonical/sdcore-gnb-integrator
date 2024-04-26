@@ -19,7 +19,7 @@ NMS_CHARM_NAME = "sdcore-nms-k8s"
 @pytest.fixture(scope="module")
 @pytest.mark.abort_on_fail
 async def deploy(ops_test, request):
-    """Deploy the charm-under-test"""
+    """Deploy the charm-under-test."""
     charm = Path(request.config.getoption("--charm_path")).resolve()
     await ops_test.model.deploy(
         charm,
