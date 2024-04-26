@@ -51,6 +51,8 @@ tox -e unit                                             # unit tests
 tox -e integration -- --charm_path=PATH_TO_BUILD_CHARM  # integration tests
 ```
 
+Note: The charm must be built before running the integration tests.
+
 ## Build
 Go to the charm directory and run:
 ```bash
