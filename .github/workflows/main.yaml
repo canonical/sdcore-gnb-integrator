@@ -3,7 +3,7 @@ name: Main branch CI
 on:
   pull_request:
     branches:
-      - main
+      - v1.4
   push:
   schedule:
     - cron: "40 6 * * 0"
@@ -46,7 +46,7 @@ jobs:
       - static-analysis
       - unit-tests-with-coverage
       - integration-test
-    if: ${{ github.ref_name == 'main' }}
+    if: ${{ github.ref_name == 'v1.4' }}
     uses: canonical/sdcore-github-workflows/.github/workflows/publish-charm.yaml@v1.0.0
     with:
       track-name: 1.4
@@ -60,7 +60,7 @@ jobs:
       - static-analysis
       - unit-tests-with-coverage
       - integration-test
-    if: ${{ (github.ref_name != 'main') && (github.event_name == 'push') }}
+    if: ${{ (github.ref_name != 'v1.4') && (github.event_name == 'push') }}
     uses: canonical/sdcore-github-workflows/.github/workflows/publish-charm.yaml@v1.0.0
     with:
       branch-name: ${{ github.ref_name }}
