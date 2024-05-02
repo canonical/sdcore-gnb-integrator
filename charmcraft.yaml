@@ -1,3 +1,21 @@
+name: sdcore-gnb-integrator
+
+summary: A Charmed Operator for SD-Core's GNBSIM component.
+description: |
+  GNB Integrator is an integrator charm for providing gNB configuration
+  to the SD-Core 5G NMS component.
+links:
+  website:
+    - https://charmhub.io/sdcore-gnb-integrator
+  source:
+    - https://github.com/canonical/sdcore-gnb-integrator
+  issues:
+    - https://github.com/canonical/sdcore-gnb-integrator/issues
+
+provides:
+  fiveg_gnb_identity:
+    interface: fiveg_gnb_identity
+
 type: charm
 bases:
   - build-on:
@@ -12,3 +30,10 @@ parts:
     build-packages:
       - cargo
       - rustc
+
+config:
+  options:
+    tac:
+      type: string
+      default: "000001"
+      description: Tracking Area Code. Hexadecimal value represented as a string.
