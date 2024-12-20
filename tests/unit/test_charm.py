@@ -5,9 +5,10 @@
 from unittest.mock import call, patch
 
 import pytest
-from charm import SdcoreGnbIntegratorCharm
 from ops import testing
 from ops.model import ActiveStatus, BlockedStatus
+
+from charm import SdcoreGnbIntegratorCharm
 
 GNB_IDENTITY_LIB_PATH = "charms.sdcore_gnbsim_k8s.v0.fiveg_gnb_identity"
 NAMESPACE = "whatever"
@@ -27,8 +28,10 @@ class TestCharm:
         patch.stopall()
 
     @pytest.fixture(autouse=True)
-    def harness(self, setUp, request):
-        self.harness = testing.Harness(SdcoreGnbIntegratorCharm)
+    def harness_setup(self, setUp, request):
+        self.harness: testing.Harness[SdcoreGnbIntegratorCharm] = (
+            testing.Harness(SdcoreGnbIntegratorCharm)
+        )
         self.harness.set_model_name(name=NAMESPACE)
         self.harness.set_leader(is_leader=True)
         self.harness.begin()
