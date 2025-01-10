@@ -3,12 +3,16 @@
 
 resource "juju_application" "gnb" {
   name  = var.app_name
-  model = var.model_name
+  model = var.model
 
   charm {
     name    = "sdcore-gnb-integrator"
     channel = var.channel
+    revision = var.revision
+    base     = var.base
   }
-  config = var.config
-  units  = 1
+
+  constraints = var.constraints
+  resources   = var.resources
+  units       = var.units
 }
