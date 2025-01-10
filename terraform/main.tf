@@ -6,8 +6,8 @@ resource "juju_application" "gnb" {
   model = var.model
 
   charm {
-    name    = "sdcore-gnb-integrator"
-    channel = var.channel
+    name     = "sdcore-gnb-integrator"
+    channel  = var.channel
     revision = var.revision
     base     = var.base
   }
