@@ -56,6 +56,7 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
             return
         if not self._relation_created(CORE_GNB_RELATION_NAME):
             logger.info("No %s relations found.", CORE_GNB_RELATION_NAME)
+            return
 
         self._core_gnb_requirer.publish_gnb_information(gnb_name=self._gnb_name)
 
@@ -68,7 +69,7 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
         Returns:
             bool: Whether the relation was created.
         """
-        return bool(self.model.relations[relation_name])
+        return bool(self.model.relations.get(relation_name))
 
     @property
     def _gnb_name(self) -> str:
