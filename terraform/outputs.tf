@@ -6,9 +6,8 @@ output "app_name" {
   value       = juju_application.gnb.name
 }
 
-# Provided integration endpoints
-
-output "fiveg_gnb_identity_endpoint" {
-  description = "Name of the endpoint used to provide information about represented gNB."
-  value       = "fiveg_gnb_identity"
+output "requires" {
+  value = {
+    fiveg_core_gnb = "fiveg_core_gnb"
+  }
 }
