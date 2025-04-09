@@ -43,6 +43,13 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
         if not self._core_gnb_requirer.tac or not self._core_gnb_requirer.plmns:
             event.add_status(WaitingStatus("Waiting for TAC and PLMNs configuration"))
             return
+        if not self._is_gnb_name_published():
+            event.add_status(
+                BlockedStatus(
+                    "Invalid configuration: gNB name is missing from the relation"
+                )
+            )
+            return
         event.add_status(
             ActiveStatus(
                 f"PLMNs: {','.join([str(plmn.asdict()) for plmn in self._core_gnb_requirer.plmns])}, "  # noqa: E501
@@ -58,7 +65,10 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
             logger.info("No %s relations found.", CORE_GNB_RELATION_NAME)
             return
 
-        self._core_gnb_requirer.publish_gnb_information(gnb_name=self._gnb_name)
+        try:
+            self._core_gnb_requirer.publish_gnb_information(gnb_name=self._gnb_name)
+        except ValueError:
+            return
 
     def _relation_created(self, relation_name: str) -> bool:
         """Return whether a given Juju relation was created.
@@ -79,6 +89,12 @@ class SdcoreGnbIntegratorCharm(ops.CharmBase):
             str: the gNB's name.
         """
         return f"{self.model.name}-gnb-{self.app.name}"
+
+    def _is_gnb_name_published(self) -> bool:
+        relation = self.model.get_relation(CORE_GNB_RELATION_NAME)
+        if not relation:
+            return False
+        return relation.data[self.app].get("gnb-name") is not None
 
 
 if __name__ == "__main__":  # pragma: nocover
