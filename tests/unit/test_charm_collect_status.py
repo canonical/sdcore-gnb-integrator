@@ -45,6 +45,22 @@ class TestCharmCollectUnitStatus(GnbIntegratorUnitTestFixtures):
 
         assert state_out.unit_status == WaitingStatus("Waiting for TAC and PLMNs configuration")
 
+    def test_fiveg_core_gnb_gnb_name_unavailable_when_collect_unit_status_then_status_is_blocked(  # noqa: E501
+        self,
+    ):
+        self.mock_gnb_core_remote_tac.return_value = 1
+        self.mock_gnb_core_remote_plmns.return_value = PLMNConfig(mcc="001", mnc="01", sst=31)
+        core_gnb_relation = testing.Relation(
+                endpoint="fiveg_core_gnb", interface="fiveg_core_gnb"
+            )
+        state_in = testing.State(leader=True, relations=[core_gnb_relation])
+
+        state_out = self.ctx.run(self.ctx.on.collect_unit_status(), state_in)
+
+        assert state_out.unit_status == BlockedStatus(
+            "Invalid configuration: gNB name is missing from the relation"
+        )
+
     @pytest.mark.parametrize(
         "tac,plmns",
         [
@@ -56,8 +72,10 @@ class TestCharmCollectUnitStatus(GnbIntegratorUnitTestFixtures):
         self.mock_gnb_core_remote_tac.return_value = tac
         self.mock_gnb_core_remote_plmns.return_value = plmns
         core_gnb_relation = testing.Relation(
-                endpoint="fiveg_core_gnb", interface="fiveg_core_gnb"
-            )
+            endpoint="fiveg_core_gnb",
+            interface="fiveg_core_gnb",
+            local_app_data={"gnb-name": "gnb-integrator"},
+        )
         state_in = testing.State(leader=True, relations=[core_gnb_relation])
 
         state_out = self.ctx.run(self.ctx.on.collect_unit_status(), state_in)
