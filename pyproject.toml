@@ -1,11 +1,11 @@
 [project]
 name = "sdcore-gnb-integrator"
 version = "0.1.0"
-requires-python = ">=3.10"
+requires-python = ">=3.13.3"
 
 dependencies = [
     "ops",
-    "pydantic<2.11.4",
+    "pydantic<2.11.5",
     "pytest-interface-tester"
 ]
 
